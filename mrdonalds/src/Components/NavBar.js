@@ -29,7 +29,7 @@ const H1 = styled.h1`
 `;
 
 const ImgLogo = styled.img`
-	widht: 50px;
+	width: 50px;
 `;
 
 const Login = styled.button`
