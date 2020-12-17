@@ -7,6 +7,7 @@ import { ListItem } from './ListItem';
 const StyledMenu = styled.main`
 	background: #e3e3e3;
 	margin-top: 80px;
+	margin-left: 330px;
 `;
 
 const StyledSection = styled.section`
