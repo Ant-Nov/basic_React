@@ -10,7 +10,7 @@ const NavBarStyled = styled.header`
 	z-index: 10;
 	background: #299b01;
 	height: 80px;
-	width: 100vw;
+	width: 100%;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -35,7 +35,6 @@ const ImgLogo = styled.img`
 const Login = styled.button`
 	outline: none;
 	border: none;
-	margin-right: 20px;
 	text-transform: uppercase;
 	font-family: Roboto, sans-serif;
 	background: transparent;

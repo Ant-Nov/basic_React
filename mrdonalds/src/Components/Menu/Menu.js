@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import dbMenu from './DBMenu';
+import dbMenu from '../DBMenu';
 import banner from '../images/banner.png';
 import { ListItem } from './ListItem';
 

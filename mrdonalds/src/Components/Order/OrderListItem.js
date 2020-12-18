@@ -26,12 +26,12 @@ const TrashImg = styled.button`
 	margin: 5px 0;
 `;
 
-export const OrderListItem = () => {
+export const OrderListItem = ({ order }) => {
 	return (
 		<OrderItemStyled>
-			<span>JS Burger</span>
+			<span>{order.name}</span>
 			<span>4</span>
-			<span>340 P</span>
+			<span>{order.price.toLocaleString('ru-RU', { style: 'currency', currency: 'RUB' })}</span>
 			<TrashImg />
 		</OrderItemStyled>
 	);
