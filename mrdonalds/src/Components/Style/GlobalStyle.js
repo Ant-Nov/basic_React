@@ -25,7 +25,16 @@ img {
 }
 
 button {
-  	cursor: pointer;
+  cursor: pointer;
+}
+
+button, input{
+font: inherit;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
 }
 
 a {
