@@ -34,7 +34,7 @@ const TrashImg = styled.button`
 	margin: 5px 0;
 `;
 
-export const OrderListItem = ({ order }) => {
+export const OrderListItem = ({ order, removeItem }) => {
 	let showTop = [];
 	if (order.topping) {
 		order.topping.forEach(item => {
@@ -43,15 +43,16 @@ export const OrderListItem = ({ order }) => {
 			}
 		});
 	}
-	console.log(showTop);
 
 	return (
 		<>
 			<OrderItemStyled>
-				<span>{order.name}</span>
+				<span>
+					{order.name} {order.choice}
+				</span>
 				<span>{order.count}</span>
 				<span>{formatCurrency(totalPrice(order))}</span>
-				<TrashImg />
+				<TrashImg onClick={removeItem} />
 			</OrderItemStyled>
 			{order.topping && <AddTopping>{showTop.join(', ')}</AddTopping>}
 		</>

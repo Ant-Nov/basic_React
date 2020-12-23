@@ -49,7 +49,11 @@ const EmptyList = styled.p`
 	color: #a6a6a6d1;
 `;
 
-export const Order = ({ orders }) => {
+export const Order = ({ orders, setOrders }) => {
+	const removeItem = item => {
+		orders.splice(orders.indexOf(item), 1);
+		setOrders([...orders]);
+	};
 	const total = orders.reduce((acc, item) => {
 		return (acc += totalPrice(item));
 	}, 0);
@@ -64,11 +68,13 @@ export const Order = ({ orders }) => {
 			<OrderContent>
 				{orders.length ? (
 					<OrderList>
-						{orders.map(item => (
-							<>
-								<OrderListItem order={item} />
-							</>
-						))}
+						{orders.map(item => {
+							return (
+								<>
+									<OrderListItem order={item} removeItem={() => removeItem(item)} />
+								</>
+							);
+						})}
 					</OrderList>
 				) : (
 					<EmptyList>Список заказов пуст</EmptyList>
