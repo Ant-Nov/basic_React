@@ -11,6 +11,7 @@ const CountInput = styled.input`
 	font-size: 20px;
 	text-align: center;
 	border: none;
+	outline: none;
 `;
 
 const ButtonCount = styled.button`
@@ -26,7 +27,7 @@ export const CountItem = ({ countItem, setCountItem, onChange }) => {
 				<ButtonCount disabled={countItem <= 1} onClick={() => setCountItem(countItem - 1)}>
 					-
 				</ButtonCount>
-				<CountInput type='number' min='1' max='100' value={countItem < 1 ? '1' : countItem} onChange={onChange} />
+				<CountInput type='number' min='1' max='100' value={countItem < 1 ? '1' : countItem} readOnly onChange={onChange} />
 				<ButtonCount onClick={() => setCountItem(countItem + 1)}>+</ButtonCount>
 			</div>
 		</CountWrapper>

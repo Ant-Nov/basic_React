@@ -18,6 +18,12 @@ const OrderItemStyled = styled.li`
 	}
 `;
 
+const AddTopping = styled.p`
+	color: #9a9a9a;
+	font-size: 17px;
+	margin-top: -10px;
+`;
+
 const TrashImg = styled.button`
 	border: none;
 	outline: none;
@@ -29,12 +35,25 @@ const TrashImg = styled.button`
 `;
 
 export const OrderListItem = ({ order }) => {
+	let showTop = [];
+	if (order.topping) {
+		order.topping.forEach(item => {
+			if (item.checked === true) {
+				showTop.push(item.name);
+			}
+		});
+	}
+	console.log(showTop);
+
 	return (
-		<OrderItemStyled>
-			<span>{order.name}</span>
-			<span>{order.count}</span>
-			<span>{formatCurrency(totalPrice(order))}</span>
-			<TrashImg />
-		</OrderItemStyled>
+		<>
+			<OrderItemStyled>
+				<span>{order.name}</span>
+				<span>{order.count}</span>
+				<span>{formatCurrency(totalPrice(order))}</span>
+				<TrashImg />
+			</OrderItemStyled>
+			{order.topping && <AddTopping>{showTop.join(', ')}</AddTopping>}
+		</>
 	);
 };

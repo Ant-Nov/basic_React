@@ -13,7 +13,7 @@ const OrderStyled = styled.section`
 	left: 0;
 	padding: 20px;
 	background: #fff;
-	min-width: 350px;
+	width: 350px;
 	height: calc(100% - 80px);
 	box-shadow: 10px -1px 32px -12px rgba(0, 0, 0, 0.75);
 	button {
@@ -54,6 +54,10 @@ export const Order = ({ orders }) => {
 		return (acc += totalPrice(item));
 	}, 0);
 
+	const totalItems = orders.reduce((acc, item) => {
+		return (acc += item.count);
+	}, 0);
+
 	return (
 		<OrderStyled>
 			<OrderTitle>ваш заказ</OrderTitle>
@@ -61,7 +65,9 @@ export const Order = ({ orders }) => {
 				{orders.length ? (
 					<OrderList>
 						{orders.map(item => (
-							<OrderListItem order={item} />
+							<>
+								<OrderListItem order={item} />
+							</>
 						))}
 					</OrderList>
 				) : (
@@ -70,7 +76,7 @@ export const Order = ({ orders }) => {
 			</OrderContent>
 			<OrderTotal>
 				<span>Итого</span>
-				<span>5</span>
+				<span>{totalItems}</span>
 				<span>{formatCurrency(total)}</span>
 			</OrderTotal>
 			<Btn>Оформить</Btn>
