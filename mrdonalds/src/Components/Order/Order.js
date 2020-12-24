@@ -49,7 +49,7 @@ const EmptyList = styled.p`
 	color: #a6a6a6d1;
 `;
 
-export const Order = ({ orders, setOrders }) => {
+export const Order = ({ orders, setOrders, setOpenItem }) => {
 	const removeItem = item => {
 		orders.splice(orders.indexOf(item), 1);
 		setOrders([...orders]);
@@ -68,10 +68,10 @@ export const Order = ({ orders, setOrders }) => {
 			<OrderContent>
 				{orders.length ? (
 					<OrderList>
-						{orders.map(item => {
+						{orders.map((item, i) => {
 							return (
 								<>
-									<OrderListItem order={item} removeItem={() => removeItem(item)} />
+									<OrderListItem key={i} order={item} removeItem={() => removeItem(item)} setOpenItem={setOpenItem} index={i} />
 								</>
 							);
 						})}

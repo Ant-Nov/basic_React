@@ -7,14 +7,22 @@ import { formatCurrency } from '../Functions/secondaryFunctions';
 const OrderItemStyled = styled.li`
 	display: flex;
 	align-items: center;
-	& span:first-child {
-		flex-grow: 1;
+	justify-content: space-between;
+	margin-bottom: 5px;
+	cursor: pointer;
+	&:hover {
+		span:first-child {
+			color: #d35434;
+		}
 	}
-	& span:nth-child(2) {
-		margin-right: 30px;
+	span:first-child {
+		flex: 0 0 50%;
 	}
-	& span:nth-child(3) {
-		margin-right: 10px;
+	span:nth-child(2) {
+		flex: 0 0 7%;
+	}
+	span:nth-child(3) {
+		flex: 0 0 32%;
 	}
 `;
 
@@ -34,8 +42,9 @@ const TrashImg = styled.button`
 	margin: 5px 0;
 `;
 
-export const OrderListItem = ({ order, removeItem }) => {
+export const OrderListItem = ({ order, index, removeItem, setOpenItem }) => {
 	let showTop = [];
+	console.log(order);
 	if (order.topping) {
 		order.topping.forEach(item => {
 			if (item.checked === true) {
@@ -46,7 +55,7 @@ export const OrderListItem = ({ order, removeItem }) => {
 
 	return (
 		<>
-			<OrderItemStyled>
+			<OrderItemStyled onClick={e => (e.target.nodeName !== 'BUTTON' ? setOpenItem({ ...order, index }) : removeItem)}>
 				<span>
 					{order.name} {order.choice}
 				</span>
