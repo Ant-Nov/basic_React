@@ -49,7 +49,7 @@ const EmptyList = styled.p`
 	color: #a6a6a6d1;
 `;
 
-export const Order = ({ orders, setOrders, setOpenItem }) => {
+export const Order = ({ orders, setOrders, setOpenItem, auth, login }) => {
 	const removeItem = item => {
 		orders.splice(orders.indexOf(item), 1);
 		setOrders([...orders]);
@@ -61,6 +61,10 @@ export const Order = ({ orders, setOrders, setOpenItem }) => {
 	const totalItems = orders.reduce((acc, item) => {
 		return (acc += item.count);
 	}, 0);
+
+	const orderApplied = user => {
+		console.log(user.displayName + ' ваш заказ принят');
+	};
 
 	return (
 		<OrderStyled>
@@ -85,7 +89,7 @@ export const Order = ({ orders, setOrders, setOpenItem }) => {
 				<span>{totalItems}</span>
 				<span>{formatCurrency(total)}</span>
 			</OrderTotal>
-			<Btn>Оформить</Btn>
+			<Btn onClick={auth ? () => orderApplied(auth) : login}>Оформить</Btn>
 		</OrderStyled>
 	);
 };

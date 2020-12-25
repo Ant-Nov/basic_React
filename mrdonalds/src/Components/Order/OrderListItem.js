@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 import trash from '../images/trash.svg';
 import { totalPrice } from '../Functions/secondaryFunctions';
@@ -44,7 +44,7 @@ const TrashImg = styled.button`
 
 export const OrderListItem = ({ order, index, removeItem, setOpenItem }) => {
 	let showTop = [];
-	console.log(order);
+
 	if (order.topping) {
 		order.topping.forEach(item => {
 			if (item.checked === true) {
@@ -53,15 +53,17 @@ export const OrderListItem = ({ order, index, removeItem, setOpenItem }) => {
 		});
 	}
 
+	const deleteBtn = useRef(null);
+
 	return (
 		<>
-			<OrderItemStyled onClick={e => (e.target.nodeName !== 'BUTTON' ? setOpenItem({ ...order, index }) : removeItem)}>
+			<OrderItemStyled onClick={e => (e.target !== deleteBtn.current ? setOpenItem({ ...order, index }) : removeItem)}>
 				<span>
 					{order.name} {order.choice}
 				</span>
 				<span>{order.count}</span>
 				<span>{formatCurrency(totalPrice(order))}</span>
-				<TrashImg onClick={removeItem} />
+				<TrashImg ref={deleteBtn} onClick={removeItem} />
 			</OrderItemStyled>
 			{order.topping && <AddTopping>{showTop.join(', ')}</AddTopping>}
 		</>
