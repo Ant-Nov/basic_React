@@ -69,8 +69,7 @@ export const Order = ({ orders, setOrders, setOpenItem, auth, login, firebaseDat
 			order: newOrder,
 		});
 
-		orders = [];
-		setOrders(orders);
+		setOrders([]);
 	};
 
 	const removeItem = item => {

@@ -1,8 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import dbMenu from '../DBMenu';
 import banner from '../images/banner.png';
 import { ListItem } from './ListItem';
+import { useFetch } from '../Hooks/useFetch';
+import { Preloader } from '../Style/Preloader';
+import { Error } from '../Style/Error';
 
 const StyledMenu = styled.main`
 	background: #e3e3e3;
@@ -20,16 +22,30 @@ const Banner = styled.div`
 	background-size: cover;
 `;
 
-export const Menu = ({ setOpenItem }) => (
-	<StyledMenu>
-		<Banner />
-		<StyledSection>
-			<h2>Бугреры</h2>
-			<ListItem itemsList={dbMenu.burger} setOpenItem={setOpenItem} />
-		</StyledSection>
-		<StyledSection>
-			<h2>Закуски / Напитки</h2>
-			<ListItem itemsList={dbMenu.other} setOpenItem={setOpenItem} />
-		</StyledSection>
-	</StyledMenu>
-);
+export const Menu = ({ setOpenItem }) => {
+	const res = useFetch(),
+		dbMenu = res.response,
+		error = res.error;
+
+	return (
+		<StyledMenu>
+			{dbMenu ? (
+				<>
+					<Banner />
+					<StyledSection>
+						<h2>Бугреры</h2>
+						<ListItem itemsList={dbMenu.burger} setOpenItem={setOpenItem} />
+					</StyledSection>
+					<StyledSection>
+						<h2>Закуски / Напитки</h2>
+						<ListItem itemsList={dbMenu.other} setOpenItem={setOpenItem} />
+					</StyledSection>
+				</>
+			) : error ? (
+				<Error />
+			) : (
+				<Preloader />
+			)}
+		</StyledMenu>
+	);
+};
