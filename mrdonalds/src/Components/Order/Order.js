@@ -4,6 +4,7 @@ import { Btn } from '../Style/Btn';
 import { OrderListItem } from './OrderListItem';
 import { totalPrice } from '../Functions/secondaryFunctions';
 import { formatCurrency } from '../Functions/secondaryFunctions';
+import { projection } from '../Functions/secondaryFunctions';
 
 const OrderStyled = styled.section`
 	display: flex;
@@ -49,11 +50,34 @@ const EmptyList = styled.p`
 	color: #a6a6a6d1;
 `;
 
-export const Order = ({ orders, setOrders, setOpenItem, auth, login }) => {
+const rules = {
+	name: ['name'],
+	price: ['price'],
+	count: ['count'],
+	toppings: ['topping', arr => arr.filter(item => item.checked).map(item => item.name), array => (array.length ? array : 'no toppings')],
+	choices: ['choice', item => (item ? item : 'no choices')],
+};
+
+export const Order = ({ orders, setOrders, setOpenItem, auth, login, firebaseDatabase }) => {
+	const database = firebaseDatabase();
+
+	const orderApplied = () => {
+		const newOrder = orders.map(projection(rules));
+		database.ref('order').push().set({
+			username: auth.displayName,
+			email: auth.email,
+			order: newOrder,
+		});
+
+		orders = [];
+		setOrders(orders);
+	};
+
 	const removeItem = item => {
 		orders.splice(orders.indexOf(item), 1);
 		setOrders([...orders]);
 	};
+
 	const total = orders.reduce((acc, item) => {
 		return (acc += totalPrice(item));
 	}, 0);
@@ -61,10 +85,6 @@ export const Order = ({ orders, setOrders, setOpenItem, auth, login }) => {
 	const totalItems = orders.reduce((acc, item) => {
 		return (acc += item.count);
 	}, 0);
-
-	const orderApplied = user => {
-		console.log(user.displayName + ' ваш заказ принят');
-	};
 
 	return (
 		<OrderStyled>
@@ -89,7 +109,7 @@ export const Order = ({ orders, setOrders, setOpenItem, auth, login }) => {
 				<span>{totalItems}</span>
 				<span>{formatCurrency(total)}</span>
 			</OrderTotal>
-			<Btn onClick={auth ? () => orderApplied(auth) : login}>Оформить</Btn>
+			<Btn onClick={auth ? orderApplied : login}>Оформить</Btn>
 		</OrderStyled>
 	);
 };
