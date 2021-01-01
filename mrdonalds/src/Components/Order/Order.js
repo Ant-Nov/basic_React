@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Btn } from '../Style/Btn';
 import { OrderListItem } from './OrderListItem';
 import { totalPrice } from '../Functions/secondaryFunctions';
 import { formatCurrency } from '../Functions/secondaryFunctions';
-import { projection } from '../Functions/secondaryFunctions';
+import { OrderTitle } from '../Style/ModalElems';
+import { Context } from '../Functions/context';
 
 const OrderStyled = styled.section`
 	display: flex;
@@ -20,12 +21,6 @@ const OrderStyled = styled.section`
 	button {
 		align-self: center;
 	}
-`;
-
-const OrderTitle = styled.h2`
-	text-align: center;
-	text-transform: uppercase;
-	margin-bottom: 20px;
 `;
 
 const OrderContent = styled.div`
@@ -50,27 +45,13 @@ const EmptyList = styled.p`
 	color: #a6a6a6d1;
 `;
 
-const rules = {
-	name: ['name'],
-	price: ['price'],
-	count: ['count'],
-	toppings: ['topping', arr => arr.filter(item => item.checked).map(item => item.name), array => (array.length ? array : 'no toppings')],
-	choices: ['choice', item => (item ? item : 'no choices')],
-};
-
-export const Order = ({ orders, setOrders, setOpenItem, auth, login, firebaseDatabase }) => {
-	const database = firebaseDatabase();
-
-	const orderApplied = () => {
-		const newOrder = orders.map(projection(rules));
-		database.ref('order').push().set({
-			username: auth.displayName,
-			email: auth.email,
-			order: newOrder,
-		});
-
-		setOrders([]);
-	};
+export const Order = () => {
+	const {
+		orders: { orders, setOrders },
+		openItems: { setOpenItem },
+		auth: { auth, login },
+		orderConfirm: { setOrderConfirm },
+	} = useContext(Context);
 
 	const removeItem = item => {
 		orders.splice(orders.indexOf(item), 1);
@@ -87,7 +68,7 @@ export const Order = ({ orders, setOrders, setOpenItem, auth, login, firebaseDat
 
 	return (
 		<OrderStyled>
-			<OrderTitle>ваш заказ</OrderTitle>
+			<OrderTitle>ВАШ ЗАКАЗ</OrderTitle>
 			<OrderContent>
 				{orders.length ? (
 					<OrderList>
@@ -103,12 +84,28 @@ export const Order = ({ orders, setOrders, setOpenItem, auth, login, firebaseDat
 					<EmptyList>Список заказов пуст</EmptyList>
 				)}
 			</OrderContent>
-			<OrderTotal>
-				<span>Итого</span>
-				<span>{totalItems}</span>
-				<span>{formatCurrency(total)}</span>
-			</OrderTotal>
-			<Btn onClick={auth ? orderApplied : login}>Оформить</Btn>
+			{orders.length > 0 ? (
+				<>
+					<OrderTotal>
+						<span>Итого</span>
+						<span>{totalItems}</span>
+						<span>{formatCurrency(total)}</span>
+					</OrderTotal>
+					<Btn
+						onClick={
+							auth
+								? () => {
+										setOrderConfirm(true);
+								  }
+								: login
+						}
+					>
+						Оформить
+					</Btn>
+				</>
+			) : (
+				''
+			)}
 		</OrderStyled>
 	);
 };

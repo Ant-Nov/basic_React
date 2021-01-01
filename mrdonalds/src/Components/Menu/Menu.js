@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import banner from '../images/banner.png';
 import { ListItem } from './ListItem';
 import { useFetch } from '../Hooks/useFetch';
 import { Preloader } from '../Style/Preloader';
 import { Error } from '../Style/Error';
+import { Context } from '../Functions/context';
 
 const StyledMenu = styled.main`
 	background: #e3e3e3;
@@ -22,7 +23,11 @@ const Banner = styled.div`
 	background-size: cover;
 `;
 
-export const Menu = ({ setOpenItem }) => {
+export const Menu = () => {
+	const {
+		openItems: { setOpenItem },
+	} = useContext(Context);
+
 	const res = useFetch(),
 		dbMenu = res.response,
 		error = res.error;
